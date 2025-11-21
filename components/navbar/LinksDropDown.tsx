@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import UserIcon from "./UserIcon";
 import { links } from "@/utils/links";
 import SignOutLink from "./SignOutLink";
+import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 
 const LinksDropDown = () => {
   return (
@@ -22,15 +23,36 @@ const LinksDropDown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-52' align='start' sideOffset={10}>
-        {links.map((link) => {
-          return (
-            <DropdownMenuItem key={link.href}>
-              <Link href={link.href} className='capitalize w-full'>
-                {link.label}
-              </Link>
-            </DropdownMenuItem>
-          );
-        })}
+        <SignedOut>
+          <DropdownMenuItem>
+            <SignInButton mode='modal'>
+              <Button variant='ghost' className='w-full justify-start'>
+                Login
+              </Button>
+            </SignInButton>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <SignUpButton mode='modal'>
+              <Button variant='ghost' className='w-full justify-start'>
+                Register
+              </Button>
+            </SignUpButton>
+          </DropdownMenuItem>
+        </SignedOut>
+        <SignedIn>
+          {links.map((link) => {
+            return (
+              <DropdownMenuItem key={link.href}>
+                <Link href={link.href} className='capitalize w-full'>
+                  {link.label}
+                </Link>
+              </DropdownMenuItem>
+            );
+          })}
+          <DropdownMenuSeparator />
+          <SignOutLink />
+        </SignedIn>
       </DropdownMenuContent>
     </DropdownMenu>
   );
